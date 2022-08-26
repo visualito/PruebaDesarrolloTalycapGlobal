@@ -1,6 +1,9 @@
 # PruebaDesarrolloTalycapGlobal
 Solución de la prueba de Desarrollador .Net FullStack de Talycap Global
 
+Consideraciones:  En esta solución se puede haber utilizado Dependency Injectio, Cifrado de Passwords, DataAnotations y un front más elaborado, por motivos de tiempo no se implmentaropn estas
+y otras buenas prácticas.
+
 
 Esta solución consta de 5 proyectos que se corresponden con las capas de la arquitectura respectiva
 
