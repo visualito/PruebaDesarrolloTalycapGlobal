@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/LibreriaClimaWCF" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/LibreriaClimaWCF" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Clima">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Anio" type="xs:int" />
+      <xs:element minOccurs="0" name="Ciudad" nillable="true" type="tns:Ciudad" />
+      <xs:element minOccurs="0" name="Dia" type="xs:int" />
+      <xs:element minOccurs="0" name="Estado" nillable="true" type="tns:Estado" />
+      <xs:element minOccurs="0" name="Fecha" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Hora" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="HoraEntera" type="xs:int" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Mes" type="xs:int" />
+      <xs:element minOccurs="0" name="MinutosEnteros" type="xs:int" />
+      <xs:element minOccurs="0" name="Pais" nillable="true" type="tns:Pais" />
+      <xs:element minOccurs="0" name="Temperatura" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Clima" nillable="true" type="tns:Clima" />
+  <xs:complexType name="Ciudad">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IdPais" type="xs:int" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Ciudad" nillable="true" type="tns:Ciudad" />
+  <xs:complexType name="Estado">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Estado" nillable="true" type="tns:Estado" />
+  <xs:complexType name="Pais">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Pais" nillable="true" type="tns:Pais" />
+  <xs:complexType name="ArrayOfClima">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Clima" nillable="true" type="tns:Clima" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClima" nillable="true" type="tns:ArrayOfClima" />
+</xs:schema>

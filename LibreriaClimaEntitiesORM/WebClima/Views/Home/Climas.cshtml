@@ -1,0 +1,77 @@
+﻿@model System.Collections.Generic.List<WebClima.ServicioClima.Clima>
+
+@{
+    ViewBag.Title = "Climas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<button type="button" class="btn btn-default btn-md" data-toggle="modal" data-url="@Url.Action("Create","Home")" id="btnCreateClima">
+    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Agregar Clima
+</button>
+
+<table id="tblClimas" class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                Fecha
+            </th>
+            <th scope="col">
+                Temperatura
+            </th>
+            <th scope="col">
+                Estado
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Temperatura) &deg;C
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado.Nombre)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    var assetListVM;
+    $(function () {
+
+
+
+        $("#btnCreateClima").on("click", function () {
+
+            var url = $(this).data("url");
+
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    const ultimoClima = data[data.length - 1];
+
+                    
+                    const strNuevaFila = "<tr><td>" + ultimoClima.Fecha + "</td><td>" + ultimoClima.Temperatura + "&deg;C</td><td>" + ultimoClima.Estado.Nombre + "</td></tr>";
+
+                    $("#tblClimas").append(strNuevaFila);
+                });
+
+
+        });
+
+    });
+
+
+
+
+</script>
+
+
+
+

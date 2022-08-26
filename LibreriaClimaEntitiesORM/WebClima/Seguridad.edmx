@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ModeloSeguridad.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="permisos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ElementoRelacionado" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="idElemento" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolePermiso">
+          <Key>
+            <PropertyRef Name="id_role" />
+            <PropertyRef Name="id_permiso" />
+          </Key>
+          <Property Name="id_role" Type="int" Nullable="false" />
+          <Property Name="id_permiso" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usuarioRole">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="id_role" />
+          </Key>
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="id_role" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="usuario" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="nombres" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="apellidos" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="1024" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_usuarioRole_roles">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="usuarioRole" Type="Self.usuarioRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usuarioRole">
+              <PropertyRef Name="id_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Autentica" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="BorraRolePermiso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_role" Type="int" Mode="In" />
+          <Parameter Name="id_permiso" Type="int" Mode="In" />
+        </Function>
+        <Function Name="BorraRoleUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_usuario" Type="int" Mode="In" />
+          <Parameter Name="id_role" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ComplementoPermisosRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="role" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ComplementoRolesusuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DatosUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="DatosUsuarioPorId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertaPermiso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="descripcion" Type="nvarchar" Mode="In" />
+          <Parameter Name="ElementoRelacionado" Type="nvarchar" Mode="In" />
+          <Parameter Name="idElemento" Type="nvarchar" Mode="In" />
+          <Parameter Name="id" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="InsertaRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="descripcion" Type="nvarchar" Mode="In" />
+          <Parameter Name="id" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="InsertaRolePermiso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_role" Type="int" Mode="In" />
+          <Parameter Name="id_permiso" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertaRoleUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_role" Type="int" Mode="In" />
+          <Parameter Name="id_usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertaUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="nombres" Type="nvarchar" Mode="In" />
+          <Parameter Name="apellidos" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+          <Parameter Name="id" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="PermisosRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="role" Type="int" Mode="In" />
+        </Function>
+        <Function Name="PermisosUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Rolesusuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModeloSeguridadStoreContainer">
+          <EntitySet Name="permisos" EntityType="Self.permisos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolePermiso" EntityType="Self.RolePermiso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuarioRole" EntityType="Self.usuarioRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_usuarioRole_roles" Association="Self.FK_usuarioRole_roles">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="usuarioRole" EntitySet="usuarioRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ModeloSeguridad" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="permisos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ElementoRelacionado" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idElemento" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolePermiso">
+          <Key>
+            <PropertyRef Name="id_role" />
+            <PropertyRef Name="id_permiso" />
+          </Key>
+          <Property Name="id_role" Type="Int32" Nullable="false" />
+          <Property Name="id_permiso" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="usuarioRole" Relationship="Self.FK_usuarioRole_roles" FromRole="roles" ToRole="usuarioRole" />
+        </EntityType>
+        <EntityType Name="usuarioRole">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="id_role" />
+          </Key>
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_role" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="roles" Relationship="Self.FK_usuarioRole_roles" FromRole="usuarioRole" ToRole="roles" />
+        </EntityType>
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="usuario" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombres" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_usuarioRole_roles">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="usuarioRole" Type="Self.usuarioRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usuarioRole">
+              <PropertyRef Name="id_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SeguridadEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="permisos" EntityType="Self.permisos" />
+          <EntitySet Name="RolePermiso" EntityType="Self.RolePermiso" />
+          <EntitySet Name="roles" EntityType="Self.roles" />
+          <EntitySet Name="usuarioRole" EntityType="Self.usuarioRole" />
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" />
+          <AssociationSet Name="FK_usuarioRole_roles" Association="Self.FK_usuarioRole_roles">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="usuarioRole" EntitySet="usuarioRole" />
+          </AssociationSet>
+          <FunctionImport Name="Autentica" ReturnType="Collection(Int32)">
+            <Parameter Name="usuario" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="BorraRolePermiso">
+            <Parameter Name="id_role" Mode="In" Type="Int32" />
+            <Parameter Name="id_permiso" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="BorraRoleUsuario">
+            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_role" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ComplementoPermisosRole" ReturnType="Collection(ModeloSeguridad.ComplementoPermisosRole_Result)">
+            <Parameter Name="role" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ComplementoRolesusuario" ReturnType="Collection(ModeloSeguridad.ComplementoRolesusuario_Result)">
+            <Parameter Name="usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DatosUsuario" ReturnType="Collection(ModeloSeguridad.DatosUsuario_Result)">
+            <Parameter Name="usuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DatosUsuarioPorId" ReturnType="Collection(ModeloSeguridad.DatosUsuarioPorId_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaPermiso">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="ElementoRelacionado" Mode="In" Type="String" />
+            <Parameter Name="idElemento" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaRole">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaRolePermiso">
+            <Parameter Name="id_role" Mode="In" Type="Int32" />
+            <Parameter Name="id_permiso" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaRoleUsuario">
+            <Parameter Name="id_role" Mode="In" Type="Int32" />
+            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaUsuario">
+            <Parameter Name="usuario" Mode="In" Type="String" />
+            <Parameter Name="nombres" Mode="In" Type="String" />
+            <Parameter Name="apellidos" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PermisosRole" ReturnType="Collection(ModeloSeguridad.PermisosRole_Result)">
+            <Parameter Name="role" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PermisosUsuario" ReturnType="Collection(ModeloSeguridad.PermisosUsuario_Result)">
+            <Parameter Name="usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Rolesusuario" ReturnType="Collection(ModeloSeguridad.Rolesusuario_Result)">
+            <Parameter Name="usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ComplementoPermisosRole1" ReturnType="Collection(ModeloSeguridad.ComplementoPermisosRole1_Result)">
+          <Parameter Name="role" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ComplementoRolesusuario1" ReturnType="Collection(ModeloSeguridad.ComplementoRolesusuario1_Result)">
+          <Parameter Name="usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DatosUsuario1" ReturnType="Collection(ModeloSeguridad.DatosUsuario1_Result)">
+          <Parameter Name="usuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DatosUsuarioPorId1" ReturnType="Collection(ModeloSeguridad.DatosUsuarioPorId1_Result)">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaPermiso1">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="ElementoRelacionado" Mode="In" Type="String" />
+            <Parameter Name="idElemento" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaRole1">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaRolePermiso1">
+            <Parameter Name="id_role" Mode="In" Type="Int32" />
+            <Parameter Name="id_permiso" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaRoleUsuario1">
+            <Parameter Name="id_role" Mode="In" Type="Int32" />
+            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertaUsuario1">
+            <Parameter Name="usuario" Mode="In" Type="String" />
+            <Parameter Name="nombres" Mode="In" Type="String" />
+            <Parameter Name="apellidos" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PermisosRole1" ReturnType="Collection(ModeloSeguridad.PermisosRole1_Result)">
+          <Parameter Name="role" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PermisosUsuario1" ReturnType="Collection(ModeloSeguridad.PermisosUsuario1_Result)">
+          <Parameter Name="usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Rolesusuario1" ReturnType="Collection(ModeloSeguridad.Rolesusuario1_Result)">
+          <Parameter Name="usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="ComplementoPermisosRole_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="ElementoRelacionado" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="idElemento" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="ComplementoRolesusuario_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="64" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+        </ComplexType>
+        <ComplexType Name="DatosUsuario_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombres" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="apellidos" Nullable="false" MaxLength="128" />
+        </ComplexType>
+        <ComplexType Name="DatosUsuarioPorId_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombres" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="apellidos" Nullable="false" MaxLength="128" />
+        </ComplexType>
+        <ComplexType Name="PermisosRole_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="ElementoRelacionado" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="idElemento" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="PermisosUsuario_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="idElemento" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="ElementoRelacionado" Nullable="false" MaxLength="512" />
+        </ComplexType>
+        <ComplexType Name="Rolesusuario_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="64" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+        </ComplexType>
+        <ComplexType Name="ComplementoPermisosRole1_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="ElementoRelacionado" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="idElemento" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="ComplementoRolesusuario1_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="64" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+        </ComplexType>
+        <ComplexType Name="DatosUsuario1_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombres" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="apellidos" Nullable="false" MaxLength="128" />
+        </ComplexType>
+        <ComplexType Name="DatosUsuarioPorId1_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombres" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="apellidos" Nullable="false" MaxLength="128" />
+        </ComplexType>
+        <ComplexType Name="PermisosRole1_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="ElementoRelacionado" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="idElemento" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="PermisosUsuario1_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="idElemento" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="ElementoRelacionado" Nullable="false" MaxLength="512" />
+        </ComplexType>
+        <ComplexType Name="Rolesusuario1_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="64" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="512" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModeloSeguridadStoreContainer" CdmEntityContainer="SeguridadEntities">
+    <EntitySetMapping Name="permisos">
+      <EntityTypeMapping TypeName="IsTypeOf(ModeloSeguridad.permisos)">
+        <MappingFragment StoreEntitySet="permisos">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="ElementoRelacionado" ColumnName="ElementoRelacionado" />
+          <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RolePermiso">
+      <EntityTypeMapping TypeName="IsTypeOf(ModeloSeguridad.RolePermiso)">
+        <MappingFragment StoreEntitySet="RolePermiso">
+          <ScalarProperty Name="id_role" ColumnName="id_role" />
+          <ScalarProperty Name="id_permiso" ColumnName="id_permiso" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="roles">
+      <EntityTypeMapping TypeName="IsTypeOf(ModeloSeguridad.roles)">
+        <MappingFragment StoreEntitySet="roles">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuarioRole">
+      <EntityTypeMapping TypeName="IsTypeOf(ModeloSeguridad.usuarioRole)">
+        <MappingFragment StoreEntitySet="usuarioRole">
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="id_role" ColumnName="id_role" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuarios">
+      <EntityTypeMapping TypeName="IsTypeOf(ModeloSeguridad.usuarios)">
+        <MappingFragment StoreEntitySet="usuarios">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="usuario" ColumnName="usuario" />
+          <ScalarProperty Name="nombres" ColumnName="nombres" />
+          <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ComplementoPermisosRole1" FunctionName="ModeloSeguridad.Store.ComplementoPermisosRole">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModeloSeguridad.ComplementoPermisosRole1_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ElementoRelacionado" ColumnName="ElementoRelacionado" />
+                <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ComplementoRolesusuario1" FunctionName="ModeloSeguridad.Store.ComplementoRolesusuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModeloSeguridad.ComplementoRolesusuario1_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DatosUsuario1" FunctionName="ModeloSeguridad.Store.DatosUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModeloSeguridad.DatosUsuario1_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DatosUsuarioPorId1" FunctionName="ModeloSeguridad.Store.DatosUsuarioPorId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModeloSeguridad.DatosUsuarioPorId1_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertaPermiso1" FunctionName="ModeloSeguridad.Store.InsertaPermiso" />
+          <FunctionImportMapping FunctionImportName="InsertaRole1" FunctionName="ModeloSeguridad.Store.InsertaRole" />
+          <FunctionImportMapping FunctionImportName="InsertaRolePermiso1" FunctionName="ModeloSeguridad.Store.InsertaRolePermiso" />
+          <FunctionImportMapping FunctionImportName="InsertaRoleUsuario1" FunctionName="ModeloSeguridad.Store.InsertaRoleUsuario" />
+          <FunctionImportMapping FunctionImportName="InsertaUsuario1" FunctionName="ModeloSeguridad.Store.InsertaUsuario" />
+          <FunctionImportMapping FunctionImportName="PermisosRole1" FunctionName="ModeloSeguridad.Store.PermisosRole">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModeloSeguridad.PermisosRole1_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ElementoRelacionado" ColumnName="ElementoRelacionado" />
+                <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PermisosUsuario1" FunctionName="ModeloSeguridad.Store.PermisosUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModeloSeguridad.PermisosUsuario1_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+                <ScalarProperty Name="ElementoRelacionado" ColumnName="ElementoRelacionado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Rolesusuario1" FunctionName="ModeloSeguridad.Store.Rolesusuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModeloSeguridad.Rolesusuario1_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

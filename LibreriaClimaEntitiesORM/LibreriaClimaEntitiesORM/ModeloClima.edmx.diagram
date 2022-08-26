@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1745e15b256848e6bcd53b0b85b2b7e5" Name="Diagram1">
+        <EntityTypeShape EntityType="ModeloInfoClima.Ciudad" Width="1.5" PointX="3" PointY="1.75" />
+        <EntityTypeShape EntityType="ModeloInfoClima.Clima" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="ModeloInfoClima.Estado" Width="1.5" PointX="3" PointY="5.875" />
+        <EntityTypeShape EntityType="ModeloInfoClima.Pais" Width="1.5" PointX="0.75" PointY="1.75" />
+        <AssociationConnector Association="ModeloInfoClima.FK_Ciudad_Pais" />
+        <AssociationConnector Association="ModeloInfoClima.FK_Clima_Ciudad" />
+        <AssociationConnector Association="ModeloInfoClima.FK_Clima_Estado" />
+        <AssociationConnector Association="ModeloInfoClima.FK_Clima_Pais" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,176 @@
+﻿@model System.Collections.Generic.List<WebClima.ServicioClima.Clima>
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel-heading list-panel-heading">
+    <h1 class="panel-title list-panel-title">Climas</h1>
+
+    <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-url="@Url.Action("Create","Home")" id="btnCreateClima">
+        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Agregar Clima
+    </button>
+</div>
+
+<div class="modal-dialog" id="createClimaModal" tabindex="-1" role="dialog" aria-labelledby="CreateClimaModalLabel" aria-hidden="true" data-backdrop="static">
+    <div id="createClimaContainer">
+    </div>
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                Fecha
+            </th>
+            <th scope="col">
+                Temperatura
+            </th>
+            <th scope="col">
+                Estado
+            </th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Temperatura) &deg;C
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado.Nombre)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+    <script type="text/javascript">
+        var assetListVM;
+        $(function () {
+            
+
+          
+            $("#btnCreateClima").on("click", function () {
+
+                var url = $(this).data("url");
+
+                $.get(url, function (data) {
+                    $('#createClimaContainer').html(data);
+
+                    $('#createClimaModal').modal('show');
+                });
+
+            });
+
+
+
+            $('#assets-data-table').on("click", ".editAsset", function (event) {
+
+                event.preventDefault();
+
+                var url = $(this).attr("href");
+
+                $.get(url, function (data) {
+                    $('#editAssetContainer').html(data);
+
+                    $('#editAssetModal').modal('show');
+                });
+
+            });
+
+
+
+
+
+            $('#assets-data-table').on("click", ".detailsAsset", function (event) {
+
+                event.preventDefault();
+
+                var url = $(this).attr("href");
+
+                $.get(url, function (data) {
+                    $('#detailsAssetContainer').html(data);
+
+                    $('#detailsAssetModal').modal('show');
+                });
+
+            });
+
+
+
+
+            $('#assets-data-table').on("click", ".deleteAsset", function (event) {
+
+                event.preventDefault();
+
+                var url = $(this).attr("href");
+
+                $.get(url, function (data) {
+                    $('#deleteAssetContainer').html(data);
+
+                    $('#deleteAssetModal').modal('show');
+                });
+
+            });
+
+        });
+
+    /**** Create Asset Ajax Form CallBack ********/
+
+    function CreateAssetSuccess(data) {
+
+        if (data != "success") {
+            $('#createAssetContainer').html(data);
+            return;
+        }
+        $('#createAssetModal').modal('hide');
+        $('#createAssetContainer').html("");
+        assetListVM.refresh();
+
+    }
+
+    /**** Edit Asset Ajax Form CallBack ********/
+
+    function UpdateAssetSuccess(data) {
+
+        if (data != "success") {
+            $('#editAssetContainer').html(data);
+            return;
+        }
+        $('#editAssetModal').modal('hide');
+        $('#editAssetContainer').html("");
+        assetListVM.refresh();
+
+    }
+
+    /**** Delet Asset Ajax Form CallBack ********/
+
+    function DeleteAssetSuccess(data) {
+
+        if (data != "success") {
+            $('#deleteAssetContainer').html(data);
+            return;
+        }
+        $('#deleteAssetModal').modal('hide');
+        $('#deleteAssetContainer').html("");
+        assetListVM.refresh();
+
+    }
+
+
+    </script>
+
+
+
+
+
